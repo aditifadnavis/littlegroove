@@ -1,0 +1,23 @@
+{
+  "name": "signaldesk",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k -n api,web \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "node --watch server/index.js",
+    "dev:web": "vite client --config client/vite.config.js",
+    "build": "vite build client --config client/vite.config.js",
+    "start": "node server/index.js"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "express": "^4.21.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vite": "^6.0.5"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

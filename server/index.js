@@ -1,0 +1,13 @@
+import express from 'express';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+const root=dirname(dirname(fileURLToPath(import.meta.url))), dataDir=join(root,'data'), dataFile=join(dataDir,'garden.json');
+mkdirSync(dataDir,{recursive:true});
+const starter=[{id:'p1',name:'Sunny Sprout',kind:'sunflower',plantedAt:'2026-10-25T07:00:00.000Z',minutes:25},{id:'p2',name:'Minty',kind:'mint',plantedAt:'2026-10-24T15:20:00.000Z',minutes:25},{id:'p3',name:'Little Fern',kind:'fern',plantedAt:'2026-10-24T10:00:00.000Z',minutes:25},{id:'p4',name:'Ruby Bloom',kind:'flower',plantedAt:'2026-10-23T12:30:00.000Z',minutes:50},{id:'p5',name:'Clover',kind:'clover',plantedAt:'2026-10-22T09:30:00.000Z',minutes:25}];
+let garden=existsSync(dataFile)?JSON.parse(readFileSync(dataFile,'utf8')):starter;if(!existsSync(dataFile))writeFileSync(dataFile,JSON.stringify(garden,null,2));const save=()=>writeFileSync(dataFile,JSON.stringify(garden,null,2));
+const app=express();app.use(express.json());app.use(express.static(join(root,'client','dist')));
+app.get('/api/plants',(_req,res)=>res.json({plants:garden}));
+app.post('/api/plants',(req,res)=>{const {name,kind,minutes}=req.body??{};if(typeof name!=='string'||!name.trim()||name.trim().length>24)return res.status(400).json({error:'Plant name must be 1–24 characters.'});if(!['sunflower','mint','fern','flower','clover'].includes(kind))return res.status(400).json({error:'Choose a garden plant.'});if(![25,45,60].includes(minutes))return res.status(400).json({error:'Choose a valid focus duration.'});const plant={id:Date.now().toString(36),name:name.trim(),kind,plantedAt:new Date().toISOString(),minutes};garden.unshift(plant);save();res.status(201).json(plant);});
+app.delete('/api/plants/:id',(req,res)=>{const index=garden.findIndex(p=>p.id===req.params.id);if(index<0)return res.status(404).json({error:'Plant not found.'});garden.splice(index,1);save();res.status(204).end();});
+app.get('*',(_req,res)=>res.sendFile(join(root,'client','index.html')));const port=Number(process.env.PORT)||3001;app.listen(port,()=>console.log(`Little Grove is growing at http://localhost:${port}`));
