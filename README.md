@@ -1,5 +1,5 @@
 # Little Grove 🌱
-
+https://github.com/aditifadnavis/littlegroove/blob/main/Screenshot%202026-10-25%20120400.png
 A cozy focus timer that turns completed work sessions into a growing virtual garden. Pick a timer, focus on one task, then choose a plant to add to your collection. Your garden is saved when you refresh.
 
 ## Run locally
