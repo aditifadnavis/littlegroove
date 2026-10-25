@@ -1,4 +1,5 @@
 # Little Grove 🌱
+docs/images/little-grove-preview.png
 
 A cozy focus timer that turns completed work sessions into a growing virtual garden. Pick a timer, focus on one task, then choose a plant to add to your collection. Your garden is saved when you refresh.
 
@@ -7,7 +8,7 @@ A cozy focus timer that turns completed work sessions into a growing virtual gar
 Install Node.js 20 or newer. In this project folder run:
 
 ```bash
-npm install
+npm install 
 npm run dev
 ```
 
